@@ -44,18 +44,17 @@ c. **Kompilasi Model:** Model dikompilasi menggunakan optimizer Adam, fungsi los
 d. **Pelatihan Model:** Model dilatih menggunakan data augmentasi.  `ReduceLROnPlateau` digunakan untuk mengurangi learning rate secara otomatis jika tidak ada peningkatan pada `val_loss`, mencegah model stuck di local minimum dan meningkatkan kecepatan konvergensi.
 
 ## Evaluation
-Model dievaluasi menggunakan data uji dengan beberapa metrik, antara lain:
-* **Akurasi:**  [Nilai Akurasi dari output sebelumnya]
-* **Presisi:** [Nilai Presisi dari output sebelumnya]
-* **Recall:** [Nilai Recall dari output sebelumnya]
-* **F1-Score:** [Nilai F1-Score dari output sebelumnya]
+Dalam proyek ini, model klasifikasi gambar makanan Padang dibangun dengan memanfaatkan VGG16, salah satu arsitektur deep learning populer dalam transfer learning. Dengan menggunakan bobot pretrained dari ImageNet dan menyesuaikannya untuk data makanan Padang, model menunjukkan performa klasifikasi yang cukup baik pada data uji. Model mencapai akurasi sebesar 73.87%, dengan nilai presisi rata-rata 75.10%, recall 73.87%, dan f1-score 73.76%.
+Beberapa kelas seperti telur_dadar dan ayam_pop memberikan performa tertinggi, masing-masing dengan f1-score 0.83 dan 0.81, menandakan bahwa fitur yang diekstraksi oleh VGG16 mampu membedakan ciri khas visual dari makanan tersebut dengan baik. Sebaliknya, makanan seperti ayam_goreng menunjukkan hasil klasifikasi yang masih lemah dengan recall sebesar 0.48, yang artinya model sering gagal mengenali kelas ini secara benar.
+Secara umum, VGG16 terbukti efektif dalam mengekstraksi fitur visual dari dataset gambar makanan, namun masih terdapat peluang peningkatan melalui teknik fine-tuning lebih lanjut atau augmentasi data tambahan pada kelas yang sulit dikenali.
+Evaluasi Feature Extraction dan Rekomendasi Top-N
+Ekstraksi fitur dilakukan menggunakan layer akhir VGG16 (sebelum fully connected layer) yang menghasilkan representasi visual berdimensi tinggi. Fitur-fitur ini digunakan dalam sistem Content-Based Filtering untuk merekomendasikan gambar makanan yang memiliki kesamaan visual.
+Melalui evaluasi manual dengan fungsi show_recommendations, sistem mampu menghasilkan rekomendasi makanan yang relevan secara visual. Misalnya, untuk input gambar dari kategori telur_balado, sistem merekomendasikan lima gambar dengan skor kemiripan (cosine similarity) tinggi, yaitu:
+0.8948 – telur_balado
+0.8677 – telur_balado
+0.8672 – telur_balado
+0.8613 – gulai_tunjang
+0.8423 – gulai_tunjang
 
-Selain metrik tersebut, *classification report* memberikan informasi lebih detail mengenai presisi, recall, dan F1-score untuk setiap kelas makanan.  Hal ini penting untuk mengidentifikasi kelas-kelas yang mungkin mengalami kesulitan dalam klasifikasi.
+asil ini menunjukkan bahwa fitur visual yang diekstraksi dari VGG16 sangat efektif dalam mengenali kemiripan antar gambar, terutama dalam hal tekstur, warna, dan komposisi visual khas makanan. Dengan demikian, pendekatan transfer learning + cosine similarity terbukti berhasil dalam mendukung sistem rekomendasi makanan Padang berbasis konten visual.
 
-Sistem juga dievaluasi secara visual dengan menggunakan fungsi `show_recommendations`. Fungsi ini menampilkan gambar input dan lima rekomendasi makanan lain yang paling mirip berdasarkan *cosine similarity*.  Visualisasi ini memberikan gambaran intuitif tentang kemampuan sistem dalam merekomendasikan makanan serupa.
-
-
-
-_Catatan:_
-- _Anda dapat menambahkan gambar, kode, atau tabel ke dalam laporan jika diperlukan. Temukan caranya pada contoh dokumen markdown di situs editor [Dillinger](https://dillinger.io/), [Github Guides: Mastering markdown](https://guides.github.com/features/mastering-markdown/), atau sumber lain di internet. Semangat!_
-- Jika terdapat penjelasan yang harus menyertakan code snippet, tuliskan dengan sewajarnya. Tidak perlu menuliskan keseluruhan kode project, cukup bagian yang ingin dijelaskan saja.
