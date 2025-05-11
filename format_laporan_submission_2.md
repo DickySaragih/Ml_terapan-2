@@ -1,4 +1,4 @@
-# Laporan Proyek Machine Learning - Nama Anda
+# Laporan Proyek Machine Learning - Dicky Candid Saragih
 
 ## Project Overview
 Proyek ini bertujuan membangun sistem klasifikasi gambar makanan Padang menggunakan *deep learning*. Sistem ini akan mampu mengidentifikasi berbagai jenis makanan Padang dari gambar, serta memberikan rekomendasi makanan serupa berdasarkan kemiripan fitur visual.  Sistem ini dibangun menggunakan model *transfer learning* VGG16 yang dilatih dengan dataset gambar makanan Padang.  Prosesnya mencakup persiapan data, pembangunan model, pelatihan, evaluasi, dan demonstrasi kemampuan rekomendasi sistem.  Hasil akhir proyek diharapkan dapat memberikan solusi untuk identifikasi dan rekomendasi makanan Padang, bermanfaat bagi pengguna yang ingin mengetahui informasi lebih lanjut mengenai berbagai jenis makanan Padang.
