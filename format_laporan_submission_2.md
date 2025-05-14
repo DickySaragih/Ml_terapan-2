@@ -31,14 +31,19 @@ Kondisi data: tidak ada duplikat
 Tahapan ini meliputi pembacaan data gambar dan label kategori makanan dari direktori penyimpanan di Google Drive.  Selanjutnya, dilakukan:
 a. **Pembentukan DataFrame:** Data gambar dan label diorganisir dalam pandas DataFrame, memudahkan pengelolaan dan akses data.
 b. **Resizing dan Normalisasi Gambar:** Gambar diubah ukurannya menjadi 100x100 piksel dan dinormalisasi ke rentang 0-1.  Proses ini penting untuk keseragaman input model dan efisiensi komputasi, walau berpotensi menghilangkan detail halus gambar.  Sebagai perbaikan, perlu dieksplorasi metode *resizing* alternatif seperti padding atau cropping.
+
 **2. Pembagian Data:**
 Data dibagi menjadi data latih dan data uji dengan rasio 80:20. Metode stratifikasi digunakan untuk memastikan proporsi kelas tetap sama di kedua dataset, mengurangi bias dalam model.  Penggunaan random_state memungkinkan reproduksibilitas hasil.
+
 **3. Augmentasi Data:**
 Augmentasi data dilakukan pada data latih menggunakan ImageDataGenerator.  Teknik yang diterapkan termasuk rotasi, pergeseran, shear, zoom, dan flip horizontal. Tujuannya untuk meningkatkan variabilitas data latih dan meningkatkan generalisasi model.  Perlu dievaluasi parameter augmentasi dan metode fill_mode untuk optimalisasi.
+
 **4. Pelatihan Model:**
 Model yang digunakan adalah VGG16, memanfaatkan *transfer learning* dengan membekukan sebagian lapisan awal model dan menambahkan lapisan klasifikasi baru.  Metode *transfer learning* ini membantu meningkatkan akurasi dan efisiensi pelatihan. Penggunaan *optimizer Adam*, *loss function sparse_categorical_crossentropy*, dan metrik akurasi digunakan untuk proses pelatihan.  *ReduceLROnPlateau* diterapkan untuk penyesuaian *learning rate* selama pelatihan.
+
 **5. Evaluasi Model:**
 Model dievaluasi menggunakan data uji dengan metrik akurasi, presisi, *recall*, dan *F1-score*.  Confusion matrix digunakan untuk visualisasi kinerja model dalam mengklasifikasikan setiap kategori makanan.  Metrik evaluasi menunjukkan kinerja model dalam hal akurasi dan kemampuan generalisasi pada data yang belum pernah dilihat.
+
 **6. Ekstraksi Fitur dan Sistem Rekomendasi:**
 Fitur gambar diekstrak dari lapisan kedua-terakhir model VGG16 yang telah dilatih.  *Cosine similarity* digunakan untuk menghitung tingkat kemiripan antara vektor fitur gambar. Sistem rekomendasi memberikan *top-N* rekomendasi gambar dengan kemiripan visual tertinggi dengan gambar input.
 
@@ -46,14 +51,19 @@ Fitur gambar diekstrak dari lapisan kedua-terakhir model VGG16 yang telah dilati
 ## Modeling
 **1. Ekstraksi Fitur Gambar:**
 Fitur gambar diekstrak menggunakan model VGG16 yang telah dilatih sebelumnya (*pre-trained*) pada dataset ImageNet.  Model VGG16 dimodifikasi dengan menambahkan lapisan klasifikasi baru di atasnya, dan lapisan-lapisan awal dibekukan untuk memanfaatkan pengetahuan yang sudah ada.  Fitur diekstrak dari lapisan kedua terakhir model yang telah dimodifikasi. Proses *resizing* gambar dilakukan dengan ukuran tetap (100x100 piksel), yang berpotensi menghilangkan detail gambar.  Normalisasi piksel dilakukan ke rentang 0-1.
+
 **2. Perhitungan Kemiripan (Cosine Similarity):**
 Kemiripan antar gambar dihitung menggunakan *cosine similarity* pada vektor fitur yang telah diekstrak.  Nilai *cosine similarity* menunjukkan seberapa dekat dua vektor fitur dalam ruang fitur, yang merepresentasikan kemiripan visual antara dua gambar makanan.
+
 **3. Pembuatan Rekomendasi (Top-N Recommendation):**
 Sistem rekomendasi menghasilkan daftar *Top-N* rekomendasi makanan berdasarkan nilai *cosine similarity*.  Untuk setiap gambar masukan, sistem mengidentifikasi *N* gambar lain dengan nilai *cosine similarity* tertinggi.  Pada contoh implementasi, digunakan *top-5* rekomendasi (N=5).
+
 **4. Evaluasi Kualitas Rekomendasi:**
 Evaluasi dilakukan secara manual dengan menampilkan gambar input dan *top-5* rekomendasi.  Evaluasi ini dilakukan dengan visualisasi gambar masukan dan gambar rekomendasi, dan ditampilkan beserta label kategori masing-masing.  Metode evaluasi ini bertujuan untuk mengamati secara langsung kesamaan visual antara gambar masukan dan gambar rekomendasi.  Model klasifikasi gambar mencapai akurasi 74%, serta  presisi, recall, dan skor F1 yang sebanding. *Confusion matrix* digunakan untuk analisis lebih lanjut mengenai kinerja klasifikasi untuk setiap kategori.
+
 **5. Analisis Kesesuaian Rekomendasi dengan Input:**
 Berdasarkan hasil visualisasi rekomendasi, dapat dilakukan analisis kesesuaian secara manual.  Analisis ini mengamati seberapa tepat rekomendasi yang diberikan berdasarkan kemiripan visual dengan gambar masukan.  Kualitas rekomendasi dipengaruhi oleh kualitas ekstraksi fitur dan metode perhitungan kemiripan yang digunakan.
+
 **6. Visualisasi Hasil Rekomendasi:**
 Hasil rekomendasi divisualisasikan dengan menampilkan gambar input dan *top-N* rekomendasi, disertai label kategori masing-masing. Visualisasi ini memudahkan evaluasi manual terhadap kesesuaian rekomendasi dengan input.
 
