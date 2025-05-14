@@ -69,15 +69,7 @@ Hasil rekomendasi divisualisasikan dengan menampilkan gambar input dan *top-N* r
 
 
 ## Evaluation
-Dalam proyek ini, model klasifikasi gambar makanan Padang dibangun dengan memanfaatkan VGG16, salah satu arsitektur deep learning populer dalam transfer learning. Dengan menggunakan bobot pretrained dari ImageNet dan menyesuaikannya untuk data makanan Padang, model menunjukkan performa klasifikasi yang cukup baik pada data uji. Model mencapai akurasi sebesar 73.87%, dengan nilai presisi rata-rata 75.10%, recall 73.87%, dan f1-score 73.76%. Evaluasi sistem rekomendasi dilakukan menggunakan pendekatan content-based filtering berbasis cosine similarity. Sistem ini bekerja dengan cara membandingkan kemiripan fitur antara gambar input dengan seluruh gambar dalam dataset untuk menghasilkan daftar rekomendasi Top-5 yang paling mirip.
-
-Pada evaluasi ini, gambar input (Image 0) menghasilkan lima rekomendasi teratas dengan skor kemiripan sebagai berikut:
-Image Index: 100 dengan skor 0.9274 (label: telur_balado)
-Image Index: 10 dengan skor 0.8959 (label: telur_balado)
-Image Index: 104 dengan skor 0.8936 (label: telur_balado)
-Image Index: 59 dengan skor 0.8910 (label: telur_balado)
-Image Index: 79 dengan skor 0.8844 (label: telur_balado)
-
-Kelima rekomendasi tersebut menunjukkan tingkat kemiripan yang sangat tinggi terhadap gambar input, dengan skor cosine similarity di atas 0.88. Selain itu, seluruh hasil rekomendasi memiliki label yang konsisten, yaitu telur_balado, yang menunjukkan bahwa sistem berhasil merekomendasikan item dengan fitur visual yang sangat mirip dan berasal dari kategori makanan yang sama.
-Hasil ini mengindikasikan bahwa pendekatan content-based filtering yang digunakan mampu mengenali fitur-fitur penting dari gambar input dan menghasilkan rekomendasi yang relevan. Hal ini memperkuat efektivitas metode cosine similarity dalam mengukur kedekatan antar item berdasarkan representasi fitur yang dihasilkan oleh model VGG16 yang digunakan sebagai feature extractor.
+Dalam proyek ini, model klasifikasi gambar makanan Padang dibangun dengan memanfaatkan VGG16, salah satu arsitektur deep learning populer dalam transfer learning. Dengan menggunakan bobot pretrained dari ImageNet dan menyesuaikannya untuk data makanan Padang, model menunjukkan performa klasifikasi yang cukup baik pada data uji. Model mencapai akurasi sebesar 73.87%, dengan nilai presisi rata-rata 75.10%, recall 73.87%, dan f1-score 73.76%. 
+**Gambar hasil evaluas**
+[hasil cosine similarity](![image](https://github.com/user-attachments/assets/d8416b23-bf6a-4386-81cc-c03cedea9a5c)
 
