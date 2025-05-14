@@ -18,7 +18,7 @@ Tujuan utama proyek ini adalah membangun model klasifikasi gambar yang dapat men
 Solusi yang diusulkan adalah membangun model klasifikasi gambar menggunakan *deep learning*, khususnya *transfer learning* dengan arsitektur VGG16.  Model ini akan dilatih dengan dataset gambar makanan Padang yang telah dikumpulkan dan diolah.  Selanjutnya, sistem akan dilengkapi dengan kemampuan rekomendasi makanan serupa berdasarkan perhitungan kemiripan fitur gambar, yang diukur menggunakan *cosine similarity*.
 
 ## Data Understanding
-Dataset gambar makanan Padang diperoleh dari [dataset Kaggle]([https://archive.ics.uci.edu/ml/datasets/Restaurant+%26+consumer+data](https://www.kaggle.com/datasets/faldoae/padangfood) Dataset ini berisikan gambar-gambar makanan Padang dengan berbagai variasi menu. Lokasi penyimpanan dataset pada yang digunakan melalui penyimpanan google drive
+Dataset gambar makanan Padang diperoleh dari [dataset Kaggle](https://www.kaggle.com/datasets/faldoae/padangfood) Dataset ini berisikan gambar-gambar makanan Padang dengan berbagai variasi menu. Lokasi penyimpanan dataset pada yang digunakan melalui penyimpanan google drive
 
 Variabel-variabel makanan padang dataset adalah sebagai berikut:
 filepath: Jalur lengkap (path) menuju file gambar dalam dataset.
