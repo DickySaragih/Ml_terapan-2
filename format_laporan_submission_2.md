@@ -18,43 +18,56 @@ Tujuan utama proyek ini adalah membangun model klasifikasi gambar yang dapat men
 Solusi yang diusulkan adalah membangun model klasifikasi gambar menggunakan *deep learning*, khususnya *transfer learning* dengan arsitektur VGG16.  Model ini akan dilatih dengan dataset gambar makanan Padang yang telah dikumpulkan dan diolah.  Selanjutnya, sistem akan dilengkapi dengan kemampuan rekomendasi makanan serupa berdasarkan perhitungan kemiripan fitur gambar, yang diukur menggunakan *cosine similarity*.
 
 ## Data Understanding
-Dataset gambar makanan Padang diperoleh dari [dataset Kaggle]([https://archive.ics.uci.edu/ml/datasets/Restaurant+%26+consumer+data](https://www.kaggle.com/datasets/faldoae/padangfood)).. Dataset ini berisikan gambar-gambar makanan Padang dengan berbagai variasi menu. Lokasi penyimpanan dataset pada yang digunakan melalui penyimpanan google drive
+Dataset gambar makanan Padang diperoleh dari [dataset Kaggle]([https://archive.ics.uci.edu/ml/datasets/Restaurant+%26+consumer+data](https://www.kaggle.com/datasets/faldoae/padangfood) Dataset ini berisikan gambar-gambar makanan Padang dengan berbagai variasi menu. Lokasi penyimpanan dataset pada yang digunakan melalui penyimpanan google drive
 
 Variabel-variabel makanan padang dataset adalah sebagai berikut:
-- filepath: Jalur lengkap (path) menuju file gambar dalam dataset.
-- label: Nama kategori makanan Padang yang menjadi label dari gambar tersebut, ayam_goreng, ayam pop, daging rendang,gulai_ikan, dendeng batokok,gulai tunjang, gulai tambusu, telur dadar, telur balado
+filepath: Jalur lengkap (path) menuju file gambar dalam dataset.
+jumlah gambar : 993 foto
+label: Nama kategori makanan Padang yang menjadi label dari gambar tersebut, ayam_goreng, ayam pop, daging rendang,gulai_ikan, dendeng batokok,gulai tunjang, gulai tambusu, telur dadar, telur balado
+Kondisi data: tidak ada duplikat
 
 ## Data Preparation
-Adapun tahapan pada data preperation sebagai berikut:
-**1. Persiapan Data**
-a. **Pengumpulan Data:** Data gambar makanan Padang dikumpulkan dari Google Drive dan disimpan dalam direktori `/content/drive/MyDrive/Ml_terapan/makanan_padang`. Data terbagi ke dalam beberapa kategori makanan.
-b. **Pembuatan DataFrame:**  Data gambar dan label kategori diorganisir ke dalam Pandas DataFrame. DataFrame ini berisi dua kolom: `filepath` (lokasi file gambar) dan `label` (kategori makanan).
-c. **Preprocessing Gambar:**
-Resizing: Gambar diubah ukurannya menjadi 100x100 piksel menggunakan `cv2.resize()`.  Standarisasi ukuran ini penting untuk konsistensi input model.
-Normalisasi:Nilai piksel gambar dinormalisasi ke rentang 0-1 dengan membaginya dengan 255. Normalisasi membantu meningkatkan performa model dan mencegah dominasi fitur yang memiliki nilai piksel lebih besar.
-Konversi ke Array NumPy:  Daftar gambar yang telah diproses diubah menjadi array NumPy untuk digunakan dalam model.
-d. **Encoding Label:** Label kategori makanan (string) diubah menjadi representasi numerik menggunakan `LabelEncoder` dari scikit-learn.  Ini diperlukan karena model machine learning umumnya bekerja dengan data numerik.
-e. **Pembagian Data:** Data dibagi menjadi data latih (training) dan data uji (testing) dengan rasio 80:20 menggunakan `train_test_split`.  Stratifikasi (`stratify=y`) digunakan untuk memastikan proporsi setiap kelas makanan sama antara data latih dan data uji.
-f. **Augmentasi Data:** Data augmentasi digunakan untuk meningkatkan jumlah data latih dan meningkatkan generalisasi model. `ImageDataGenerator` digunakan untuk melakukan transformasi acak pada gambar seperti rotasi, pergeseran, pemotongan, zoom, dan flip horizontal. Augmentasi membantu model belajar variasi dari gambar dan mengurangi overfitting.
+**1. Pra-pemrosesan Data:**
+Tahapan ini meliputi pembacaan data gambar dan label kategori makanan dari direktori penyimpanan di Google Drive.  Selanjutnya, dilakukan:
+a. **Pembentukan DataFrame:** Data gambar dan label diorganisir dalam pandas DataFrame, memudahkan pengelolaan dan akses data.
+b. **Resizing dan Normalisasi Gambar:** Gambar diubah ukurannya menjadi 100x100 piksel dan dinormalisasi ke rentang 0-1.  Proses ini penting untuk keseragaman input model dan efisiensi komputasi, walau berpotensi menghilangkan detail halus gambar.  Sebagai perbaikan, perlu dieksplorasi metode *resizing* alternatif seperti padding atau cropping.
+**2. Pembagian Data:**
+Data dibagi menjadi data latih dan data uji dengan rasio 80:20. Metode stratifikasi digunakan untuk memastikan proporsi kelas tetap sama di kedua dataset, mengurangi bias dalam model.  Penggunaan random_state memungkinkan reproduksibilitas hasil.
+**3. Augmentasi Data:**
+Augmentasi data dilakukan pada data latih menggunakan ImageDataGenerator.  Teknik yang diterapkan termasuk rotasi, pergeseran, shear, zoom, dan flip horizontal. Tujuannya untuk meningkatkan variabilitas data latih dan meningkatkan generalisasi model.  Perlu dievaluasi parameter augmentasi dan metode fill_mode untuk optimalisasi.
+**4. Pelatihan Model:**
+Model yang digunakan adalah VGG16, memanfaatkan *transfer learning* dengan membekukan sebagian lapisan awal model dan menambahkan lapisan klasifikasi baru.  Metode *transfer learning* ini membantu meningkatkan akurasi dan efisiensi pelatihan. Penggunaan *optimizer Adam*, *loss function sparse_categorical_crossentropy*, dan metrik akurasi digunakan untuk proses pelatihan.  *ReduceLROnPlateau* diterapkan untuk penyesuaian *learning rate* selama pelatihan.
+**5. Evaluasi Model:**
+Model dievaluasi menggunakan data uji dengan metrik akurasi, presisi, *recall*, dan *F1-score*.  Confusion matrix digunakan untuk visualisasi kinerja model dalam mengklasifikasikan setiap kategori makanan.  Metrik evaluasi menunjukkan kinerja model dalam hal akurasi dan kemampuan generalisasi pada data yang belum pernah dilihat.
+**6. Ekstraksi Fitur dan Sistem Rekomendasi:**
+Fitur gambar diekstrak dari lapisan kedua-terakhir model VGG16 yang telah dilatih.  *Cosine similarity* digunakan untuk menghitung tingkat kemiripan antara vektor fitur gambar. Sistem rekomendasi memberikan *top-N* rekomendasi gambar dengan kemiripan visual tertinggi dengan gambar input.
+
 
 ## Modeling
-a. **Arsitektur Model:** Digunakan model transfer learning VGG16.  `include_top=False` pada model VGG16 mengindikasikan penggunaan bagian konvolusi dari VGG16 tanpa layer klasifikasi aslinya.
-b. **Transfer Learning:**  Layer-layer pada VGG16 dibekukan (`layer.trainable = False`) untuk mempertahankan bobot yang sudah dilatih sebelumnya pada dataset ImageNet. Hal ini mempercepat pelatihan dan mengurangi kebutuhan data training yang besar.  Kemudian ditambahkan beberapa layer baru di atasnya, yaitu  `Flatten`, `Dense`, `Dropout`, dan output layer dengan fungsi aktivasi softmax untuk melakukan klasifikasi sesuai kategori makanan Padang.
-c. **Kompilasi Model:** Model dikompilasi menggunakan optimizer Adam, fungsi loss `sparse_categorical_crossentropy` (karena label sudah di-encode), dan metrik akurasi.
-d. **Pelatihan Model:** Model dilatih menggunakan data augmentasi.  `ReduceLROnPlateau` digunakan untuk mengurangi learning rate secara otomatis jika tidak ada peningkatan pada `val_loss`, mencegah model stuck di local minimum dan meningkatkan kecepatan konvergensi.
+**1. Ekstraksi Fitur Gambar:**
+Fitur gambar diekstrak menggunakan model VGG16 yang telah dilatih sebelumnya (*pre-trained*) pada dataset ImageNet.  Model VGG16 dimodifikasi dengan menambahkan lapisan klasifikasi baru di atasnya, dan lapisan-lapisan awal dibekukan untuk memanfaatkan pengetahuan yang sudah ada.  Fitur diekstrak dari lapisan kedua terakhir model yang telah dimodifikasi. Proses *resizing* gambar dilakukan dengan ukuran tetap (100x100 piksel), yang berpotensi menghilangkan detail gambar.  Normalisasi piksel dilakukan ke rentang 0-1.
+**2. Perhitungan Kemiripan (Cosine Similarity):**
+Kemiripan antar gambar dihitung menggunakan *cosine similarity* pada vektor fitur yang telah diekstrak.  Nilai *cosine similarity* menunjukkan seberapa dekat dua vektor fitur dalam ruang fitur, yang merepresentasikan kemiripan visual antara dua gambar makanan.
+**3. Pembuatan Rekomendasi (Top-N Recommendation):**
+Sistem rekomendasi menghasilkan daftar *Top-N* rekomendasi makanan berdasarkan nilai *cosine similarity*.  Untuk setiap gambar masukan, sistem mengidentifikasi *N* gambar lain dengan nilai *cosine similarity* tertinggi.  Pada contoh implementasi, digunakan *top-5* rekomendasi (N=5).
+**4. Evaluasi Kualitas Rekomendasi:**
+Evaluasi dilakukan secara manual dengan menampilkan gambar input dan *top-5* rekomendasi.  Evaluasi ini dilakukan dengan visualisasi gambar masukan dan gambar rekomendasi, dan ditampilkan beserta label kategori masing-masing.  Metode evaluasi ini bertujuan untuk mengamati secara langsung kesamaan visual antara gambar masukan dan gambar rekomendasi.  Model klasifikasi gambar mencapai akurasi 74%, serta  presisi, recall, dan skor F1 yang sebanding. *Confusion matrix* digunakan untuk analisis lebih lanjut mengenai kinerja klasifikasi untuk setiap kategori.
+**5. Analisis Kesesuaian Rekomendasi dengan Input:**
+Berdasarkan hasil visualisasi rekomendasi, dapat dilakukan analisis kesesuaian secara manual.  Analisis ini mengamati seberapa tepat rekomendasi yang diberikan berdasarkan kemiripan visual dengan gambar masukan.  Kualitas rekomendasi dipengaruhi oleh kualitas ekstraksi fitur dan metode perhitungan kemiripan yang digunakan.
+**6. Visualisasi Hasil Rekomendasi:**
+Hasil rekomendasi divisualisasikan dengan menampilkan gambar input dan *top-N* rekomendasi, disertai label kategori masing-masing. Visualisasi ini memudahkan evaluasi manual terhadap kesesuaian rekomendasi dengan input.
+
 
 ## Evaluation
-Dalam proyek ini, model klasifikasi gambar makanan Padang dibangun dengan memanfaatkan VGG16, salah satu arsitektur deep learning populer dalam transfer learning. Dengan menggunakan bobot pretrained dari ImageNet dan menyesuaikannya untuk data makanan Padang, model menunjukkan performa klasifikasi yang cukup baik pada data uji. Model mencapai akurasi sebesar 73.87%, dengan nilai presisi rata-rata 75.10%, recall 73.87%, dan f1-score 73.76%.
-Beberapa kelas seperti telur_dadar dan ayam_pop memberikan performa tertinggi, masing-masing dengan f1-score 0.83 dan 0.81, menandakan bahwa fitur yang diekstraksi oleh VGG16 mampu membedakan ciri khas visual dari makanan tersebut dengan baik. Sebaliknya, makanan seperti ayam_goreng menunjukkan hasil klasifikasi yang masih lemah dengan recall sebesar 0.48, yang artinya model sering gagal mengenali kelas ini secara benar.
-Secara umum, VGG16 terbukti efektif dalam mengekstraksi fitur visual dari dataset gambar makanan, namun masih terdapat peluang peningkatan melalui teknik fine-tuning lebih lanjut atau augmentasi data tambahan pada kelas yang sulit dikenali.
-Evaluasi Feature Extraction dan Rekomendasi Top-N
-Ekstraksi fitur dilakukan menggunakan layer akhir VGG16 (sebelum fully connected layer) yang menghasilkan representasi visual berdimensi tinggi. Fitur-fitur ini digunakan dalam sistem Content-Based Filtering untuk merekomendasikan gambar makanan yang memiliki kesamaan visual.
-Melalui evaluasi manual dengan fungsi show_recommendations, sistem mampu menghasilkan rekomendasi makanan yang relevan secara visual. Misalnya, untuk input gambar dari kategori telur_balado, sistem merekomendasikan lima gambar dengan skor kemiripan (cosine similarity) tinggi, yaitu:
-0.8948 – telur_balado
-0.8677 – telur_balado
-0.8672 – telur_balado
-0.8613 – gulai_tunjang
-0.8423 – gulai_tunjang
+Dalam proyek ini, model klasifikasi gambar makanan Padang dibangun dengan memanfaatkan VGG16, salah satu arsitektur deep learning populer dalam transfer learning. Dengan menggunakan bobot pretrained dari ImageNet dan menyesuaikannya untuk data makanan Padang, model menunjukkan performa klasifikasi yang cukup baik pada data uji. Model mencapai akurasi sebesar 73.87%, dengan nilai presisi rata-rata 75.10%, recall 73.87%, dan f1-score 73.76%. Evaluasi sistem rekomendasi dilakukan menggunakan pendekatan content-based filtering berbasis cosine similarity. Sistem ini bekerja dengan cara membandingkan kemiripan fitur antara gambar input dengan seluruh gambar dalam dataset untuk menghasilkan daftar rekomendasi Top-5 yang paling mirip.
 
-asil ini menunjukkan bahwa fitur visual yang diekstraksi dari VGG16 sangat efektif dalam mengenali kemiripan antar gambar, terutama dalam hal tekstur, warna, dan komposisi visual khas makanan. Dengan demikian, pendekatan transfer learning + cosine similarity terbukti berhasil dalam mendukung sistem rekomendasi makanan Padang berbasis konten visual.
+Pada evaluasi ini, gambar input (Image 0) menghasilkan lima rekomendasi teratas dengan skor kemiripan sebagai berikut:
+Image Index: 100 dengan skor 0.9274 (label: telur_balado)
+Image Index: 10 dengan skor 0.8959 (label: telur_balado)
+Image Index: 104 dengan skor 0.8936 (label: telur_balado)
+Image Index: 59 dengan skor 0.8910 (label: telur_balado)
+Image Index: 79 dengan skor 0.8844 (label: telur_balado)
+
+Kelima rekomendasi tersebut menunjukkan tingkat kemiripan yang sangat tinggi terhadap gambar input, dengan skor cosine similarity di atas 0.88. Selain itu, seluruh hasil rekomendasi memiliki label yang konsisten, yaitu telur_balado, yang menunjukkan bahwa sistem berhasil merekomendasikan item dengan fitur visual yang sangat mirip dan berasal dari kategori makanan yang sama.
+Hasil ini mengindikasikan bahwa pendekatan content-based filtering yang digunakan mampu mengenali fitur-fitur penting dari gambar input dan menghasilkan rekomendasi yang relevan. Hal ini memperkuat efektivitas metode cosine similarity dalam mengukur kedekatan antar item berdasarkan representasi fitur yang dihasilkan oleh model VGG16 yang digunakan sebagai feature extractor.
 
