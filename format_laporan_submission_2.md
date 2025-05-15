@@ -73,44 +73,58 @@ Dalam proyek ini, model klasifikasi gambar makanan Padang dibangun dengan memanf
 **Gambar hasil evaluasi menggunakan hasil cosine similarity** 
 ![Gambar 1](https://github.com/user-attachments/assets/89c601ad-0f7b-4600-adf8-73a1e63a006b)
 ![Gambar 2](https://github.com/user-attachments/assets/757c0619-d416-4e91-b41d-99d611dc7347)
-Deskripsi Eksperimen
+
+- Deskripsi Eksperimen
+  
 Dalam eksperimen ini, dikembangkan sebuah sistem rekomendasi untuk makanan khas Padang berbasis citra visual. Sistem dirancang untuk memberikan lima rekomendasi teratas berdasarkan kemiripan visual dengan gambar input. Pendekatan yang digunakan adalah content-based filtering dengan perhitungan cosine similarity, yang diperoleh dari hasil ekstraksi fitur visual menggunakan model CNN VGG-16.
 
 Langkah-Langkah Proses Evaluasi
-Input Gambar
+- Input Gambar
+- 
 Gambar makanan “telur balado” digunakan sebagai input utama dalam proses rekomendasi.
 
-Ekstraksi Fitur
+- Ekstraksi Fitur
+- 
 Fitur dari citra input serta seluruh citra dalam basis data diekstraksi menggunakan model CNN (VGG-16) untuk menghasilkan representasi dalam bentuk vektor fitur.
 
-Perhitungan Kemiripan
+- Perhitungan Kemiripan
+- 
 Dilakukan perhitungan cosine similarity antara vektor fitur gambar input dengan seluruh vektor pada dataset.
 
-Penyusunan Rekomendasi
+- Penyusunan Rekomendasi
+- 
 Lima gambar dengan nilai cosine similarity tertinggi dipilih sebagai hasil rekomendasi.
 
-Evaluasi Visual dan Semantik
+- Evaluasi Visual dan Semantik
+- 
 Evaluasi dilakukan berdasarkan kesesuaian visual serta kecocokan semantik terhadap kategori makanan.
 
 Hasil Rekomendasi 
-No	Index Gambar	Skor Similarity	Kategori Makanan
-1	100	0.9274	telur_balado
-2	10	0.8959	telur_balado
-3	104	0.8936	telur_balado
-4	59	0.8910	telur_balado
-5	79	0.8844	telur_balado
 
-Evaluasi dan Analisis
+| No | Index Gambar | Skor Similarity | Kategori Makanan  |
+|----|--------------|------------------|--------------------|
+| 1  | 100          | 0.9274           | telur_balado       |
+| 2  | 10           | 0.8959           | telur_balado       |
+| 3  | 104          | 0.8936           | telur_balado       |
+| 4  | 59           | 0.8910           | telur_balado       |
+| 5  | 79           | 0.8844           | telur_balado       |
+
+
+- Evaluasi dan Analisis
+- 
 Tingkat Akurasi Visual
 Berdasarkan hasil rekomendasi di atas, sistem berhasil memberikan lima rekomendasi teratas yang seluruhnya termasuk dalam kategori "telur balado". Hal ini menunjukkan bahwa pendekatan cosine similarity mampu mengenali kesamaan visual dengan baik, terutama dari warna dominan (merah) dan tekstur makanan.
 
-Kesesuaian Semantik
+-Kesesuaian Semantik
+
 Untuk gambar input lainnya (tidak ditampilkan di sini), terdapat beberapa hasil rekomendasi yang termasuk makanan berbeda seperti daging rendang atau gulai tunjang. Meski berbeda secara kategori makanan, visual dari makanan tersebut memiliki kemiripan warna dan tekstur, sehingga masuk ke dalam hasil rekomendasi.
 
-Kesalahan Minor
+-Kesalahan Minor
+
 Munculnya makanan selain "telur balado" dalam sebagian rekomendasi dapat dikategorikan sebagai kesalahan minor yang disebabkan oleh kemiripan fitur visual, bukan oleh kesalahan ekstraksi fitur.
 
-Kesimpulan
+-Kesimpulan
+
 Sistem rekomendasi yang dikembangkan mampu memberikan hasil yang cukup relevan berdasarkan kemiripan visual. Dengan pendekatan content-based filtering berbasis cosine similarity, sistem dapat mengenali dan merekomendasikan makanan dengan tampilan serupa. Walaupun masih terdapat kesalahan minor dari sisi semantik, secara umum sistem dapat mendukung pengguna dalam menemukan makanan dengan visual yang mirip dan menggugah selera.
 
 
