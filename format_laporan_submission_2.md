@@ -112,9 +112,11 @@ Berdasarkan hasil rekomendasi di atas, sistem berhasil memberikan lima rekomenda
 Untuk gambar input lainnya (tidak ditampilkan di sini), terdapat beberapa hasil rekomendasi yang termasuk makanan berbeda seperti daging rendang atau gulai tunjang. Meski berbeda secara kategori makanan, visual dari makanan tersebut memiliki kemiripan warna dan tekstur, sehingga masuk ke dalam hasil rekomendasi.
 
 - Kesalahan Minor
+- 
 Munculnya makanan selain "telur balado" dalam sebagian rekomendasi dapat dikategorikan sebagai kesalahan minor yang disebabkan oleh kemiripan fitur visual, bukan oleh kesalahan ekstraksi fitur.
 
 - Kesimpulan
+- 
 Sistem rekomendasi yang dikembangkan mampu memberikan hasil yang cukup relevan berdasarkan kemiripan visual. Dengan pendekatan content-based filtering berbasis cosine similarity, sistem dapat mengenali dan merekomendasikan makanan dengan tampilan serupa. Walaupun masih terdapat kesalahan minor dari sisi semantik, secara umum sistem dapat mendukung pengguna dalam menemukan makanan dengan visual yang mirip dan menggugah selera.
 
 
