@@ -112,6 +112,7 @@ Berdasarkan hasil rekomendasi di atas, sistem berhasil memberikan lima rekomenda
 Untuk gambar input lainnya (tidak ditampilkan di sini), terdapat beberapa hasil rekomendasi yang termasuk makanan berbeda seperti daging rendang atau gulai tunjang. Meski berbeda secara kategori makanan, visual dari makanan tersebut memiliki kemiripan warna dan tekstur, sehingga masuk ke dalam hasil rekomendasi.
 
 -Kesalahan Minor
+
 Munculnya makanan selain "telur balado" dalam sebagian rekomendasi dapat dikategorikan sebagai kesalahan minor yang disebabkan oleh kemiripan fitur visual, bukan oleh kesalahan ekstraksi fitur.
 
 -Kesimpulan
