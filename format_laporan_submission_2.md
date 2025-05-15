@@ -75,22 +75,29 @@ Dalam proyek ini, model klasifikasi gambar makanan Padang dibangun dengan memanf
 ![Gambar 2](https://github.com/user-attachments/assets/757c0619-d416-4e91-b41d-99d611dc7347)
 
 - Deskripsi Eksperimen
+  
 Dalam eksperimen ini, dikembangkan sebuah sistem rekomendasi untuk makanan khas Padang berbasis citra visual. Sistem dirancang untuk memberikan lima rekomendasi teratas berdasarkan kemiripan visual dengan gambar input. Pendekatan yang digunakan adalah content-based filtering dengan perhitungan cosine similarity, yang diperoleh dari hasil ekstraksi fitur visual menggunakan model CNN VGG-16.
 
 Langkah-Langkah Proses Evaluasi
+  
 - Input Gambar
+  
 Gambar makanan “telur balado” digunakan sebagai input utama dalam proses rekomendasi.
 
 - Ekstraksi Fitur
+  
 Fitur dari citra input serta seluruh citra dalam basis data diekstraksi menggunakan model CNN (VGG-16) untuk menghasilkan representasi dalam bentuk vektor fitur.
 
 - Perhitungan Kemiripan
+  
 Dilakukan perhitungan cosine similarity antara vektor fitur gambar input dengan seluruh vektor pada dataset.
 
 - Penyusunan Rekomendasi
+  
 Lima gambar dengan nilai cosine similarity tertinggi dipilih sebagai hasil rekomendasi.
 
 - Evaluasi Visual dan Semantik
+  
 Evaluasi dilakukan berdasarkan kesesuaian visual serta kecocokan semantik terhadap kategori makanan.
 
 Hasil Rekomendasi 
@@ -105,10 +112,12 @@ Hasil Rekomendasi
 
 
 - Evaluasi dan Analisis
+  
 Tingkat Akurasi Visual
 Berdasarkan hasil rekomendasi di atas, sistem berhasil memberikan lima rekomendasi teratas yang seluruhnya termasuk dalam kategori "telur balado". Hal ini menunjukkan bahwa pendekatan cosine similarity mampu mengenali kesamaan visual dengan baik, terutama dari warna dominan (merah) dan tekstur makanan.
 
--Kesesuaian Semantik
+- Kesesuaian Semantik
+
 Untuk gambar input lainnya (tidak ditampilkan di sini), terdapat beberapa hasil rekomendasi yang termasuk makanan berbeda seperti daging rendang atau gulai tunjang. Meski berbeda secara kategori makanan, visual dari makanan tersebut memiliki kemiripan warna dan tekstur, sehingga masuk ke dalam hasil rekomendasi.
 
 - Kesalahan Minor
